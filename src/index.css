@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    background-color: #0a0a0a;
+    color: #ffffff;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #0a0a0a;
+    min-height: 100vh;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-accent hover:bg-accentHover text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-surfaceHigh hover:bg-border text-textPrimary font-medium px-6 py-3 rounded-xl border border-border transition-all duration-200 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply text-textSecondary hover:text-textPrimary font-medium px-4 py-2 rounded-lg transition-all duration-200;
+  }
+
+  .btn-danger {
+    @apply bg-transparent hover:bg-red-900/20 text-danger font-medium px-6 py-3 rounded-xl border border-danger/40 transition-all duration-200;
+  }
+
+  .input-field {
+    @apply w-full bg-surfaceHigh border border-border rounded-xl px-4 py-3 text-textPrimary placeholder-textMuted focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-200;
+  }
+
+  .card {
+    @apply bg-surface border border-border rounded-2xl p-6;
+  }
+
+  .radio-option {
+    @apply flex items-center gap-3 p-4 rounded-xl border border-border cursor-pointer transition-all duration-200 hover:border-accent/50 hover:bg-surfaceHigh;
+  }
+
+  .radio-option.selected {
+    @apply border-accent bg-accentDim/30;
+  }
+
+  .yes-no-btn {
+    @apply flex-1 py-4 rounded-xl font-semibold text-lg border-2 transition-all duration-200 active:scale-95;
+  }
+
+  .yes-no-btn.yes {
+    @apply border-accent text-accent hover:bg-accent hover:text-white;
+  }
+
+  .yes-no-btn.yes.active {
+    @apply bg-accent text-white;
+  }
+
+  .yes-no-btn.no {
+    @apply border-border text-textSecondary hover:border-textSecondary hover:text-textPrimary;
+  }
+
+  .yes-no-btn.no.active {
+    @apply border-textSecondary bg-surfaceHigh text-textPrimary;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3C9D48;
+}
+
+/* GiveButter widget override */
+givebutter-widget {
+  display: block;
+  width: 100%;
+}

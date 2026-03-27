@@ -78,9 +78,9 @@ export function useAppState() {
     })
   }, [])
 
-  const goToStep = useCallback((step: number) => {
+  const goToStep = useCallback((step: number, subStep = 1) => {
     setState((prev) => {
-      const next = { ...prev, currentStep: step, currentSubStep: 1 }
+      const next = { ...prev, currentStep: step, currentSubStep: subStep }
       persistState(next)
       return next
     })
@@ -110,6 +110,7 @@ export function useAppState() {
 
   return {
     state,
+    setState,
     update,
     updateNested,
     goToStep,
