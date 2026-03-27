@@ -7,6 +7,13 @@ export function createServiceClient() {
   )
 }
 
+export function createAnonClient() {
+  return createClient(
+    process.env.VITE_SUPABASE_URL!,
+    process.env.VITE_SUPABASE_ANON_KEY!
+  )
+}
+
 export async function verifyAdmin(req: Request): Promise<{ userId: string; supabase: ReturnType<typeof createClient> }> {
   const authHeader = req.headers.get('authorization')
   if (!authHeader) throw new Error('Unauthorized')

@@ -1,10 +1,10 @@
-import { createServiceClient, errorResponse, jsonResponse } from '../_lib/admin'
+import { createAnonClient, errorResponse, jsonResponse } from '../_lib/admin'
 
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== 'POST') return errorResponse(405, 'Method not allowed')
 
   try {
-    const supabase = createServiceClient()
+    const supabase = createAnonClient()
     const { name, email, message } = await req.json() as {
       name?: string; email?: string; message?: string
     }

@@ -1,11 +1,11 @@
-import { createServiceClient, errorResponse, jsonResponse } from '../_lib/admin'
+import { createAnonClient, createServiceClient, errorResponse, jsonResponse } from '../_lib/admin'
 import { sanitizeEvidence, wrapEvidenceForLLM } from '../_lib/sanitize'
 
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== 'POST') return errorResponse(405, 'Method not allowed')
 
   try {
-    const supabase = createServiceClient()
+    const supabase = createAnonClient()
     const { volunteerEmail, missionId, missionTitle, missionPoints, evidence } = await req.json() as {
       volunteerEmail?: string; missionId?: string; missionTitle?: string; missionPoints?: number; evidence?: string
     }
@@ -73,19 +73,21 @@ Respond in 2-3 sentences. End with: VERDICT: APPROVE, VERDICT: REVIEW, or VERDIC
       .single()
 
     if (aiVerdict.includes('VERDICT: APPROVE') && missionPoints) {
-      await supabase
+      const adminDb = createServiceClient() // admin operation: auto-approve
+
+      await adminDb
         .from('mission_submissions')
         .update({ status: 'approved', reviewed_at: new Date().toISOString() })
         .eq('id', row?.id)
 
-      await supabase.from('volunteer_activities').insert({
+      await adminDb.from('volunteer_activities').insert({
         volunteer_id: vol.id, activity: missionTitle,
         points: missionPoints, notes: 'Auto-approved by AI verification',
       })
 
-      await supabase.rpc('recalculate_volunteer_points', { vol_id: vol.id })
+      await adminDb.rpc('recalculate_volunteer_points', { vol_id: vol.id })
 
-      const { data: updated } = await supabase
+      const { data: updated } = await adminDb
         .from('volunteers')
         .select('points, tier')
         .eq('id', vol.id)
