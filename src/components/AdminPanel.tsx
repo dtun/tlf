@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { StepWrapper } from './StepWrapper';
 import { supabase } from '../lib/supabase';
+import { sanitizeHtmlClient } from '../lib/sanitize-client';
 
 interface AdminPanelProps {
   onBack: () => void;
@@ -185,7 +186,7 @@ const EmailTab: React.FC = () => {
               <button onClick={() => setPreview(v => !v)} className="text-xs text-accent hover:text-accentHover">{preview ? 'Edit' : 'Preview'}</button>
             </div>
             {preview
-              ? <div className="bg-white rounded-xl p-4 min-h-[200px] text-sm text-gray-800 overflow-auto border border-border" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+              ? <div className="bg-white rounded-xl p-4 min-h-[200px] text-sm text-gray-800 overflow-auto border border-border" dangerouslySetInnerHTML={{ __html: sanitizeHtmlClient(bodyHtml) }} />
               : <textarea value={bodyHtml} onChange={e => setBodyHtml(e.target.value)} rows={10} className="input-field text-xs font-mono resize-y w-full" />
             }
           </div>
